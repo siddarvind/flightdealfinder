@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stock Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+    }
+    .chart-box {
+      background: white;
+      padding: 20px;
+      margin-bottom: 40px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📈 Stock Dashboard</h1>
+
+    <div class="chart-box">
+      <h2>Candlestick Chart</h2>
+      <div id="candlestick-chart"></div>
+    </div>
+
+    <div class="chart-box">
+      <h2>Closing Price Trend</h2>
+      <div id="line-chart"></div>
+    </div>
+  </div>
+
+  <script>
+    // Sample dummy data
+    const stockData = [
+      { x: new Date(2025, 4, 15), y: [120, 125, 119, 123] },
+      { x: new Date(2025, 4, 16), y: [123, 127, 122, 126] },
+      { x: new Date(2025, 4, 17), y: [126, 128, 124, 125] },
+      { x: new Date(2025, 4, 18), y: [125, 130, 123, 129] },
+      { x: new Date(2025, 4, 19), y: [129, 132, 128, 131] }
+    ];
+
+    const closingPrices = stockData.map(data => {
+      return { x: data.x, y: data.y[3] }; // y[3] = closing price
+    });
+
+    // Candlestick Chart
+    const candlestickOptions = {
+      chart: {
+        type: 'candlestick',
+        height: 350
+      },
+      title: {
+        text: 'Stock Price Movement',
+        align: 'left'
+      },
+      series: [{
+        data: stockData
+      }],
+      xaxis: {
+        type: 'datetime'
+      },
+      yaxis: {
+        tooltip: {
+          enabled: true
+        }
+      }
+    };
+
+    const candlestickChart = new ApexCharts(document.querySelector("#candlestick-chart"), candlestickOptions);
+    candlestickChart.render();
+
+    // Line Chart for Closing Prices
+    const lineOptions = {
+      chart: {
+        type: 'line',
+        height: 350
+      },
+      title: {
+        text: 'Closing Price Over Time',
+        align: 'left'
+      },
+      series: [{
+        name: "Close Price",
+        data: closingPrices
+      }],
+      xaxis: {
+        type: 'datetime'
+      }
+    };
+
+    const lineChart = new ApexCharts(document.querySelector("#line-chart"), lineOptions);
+    lineChart.render();
+  </script>
+</body>
+</html>
